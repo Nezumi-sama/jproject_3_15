@@ -1,4 +1,6 @@
-public class Ticket implements Comparable<Ticket> {
+import java.util.Comparator;
+
+public class Ticket implements Comparator<Ticket> {
     protected int id;
     protected int price;
     protected String airportOfDeparture;
@@ -54,7 +56,7 @@ public class Ticket implements Comparable<Ticket> {
         this.time = time;
     }
 
-    @Override
+  /*  @Override
     public int compareTo(Ticket o) {
         if (this.price < o.price) {
             return -1;
@@ -63,5 +65,13 @@ public class Ticket implements Comparable<Ticket> {
         } else {
             return 0;
         }
+    }*/
+
+    @Override
+    public int compare(Ticket o1, Ticket o2) {
+
+            return o1.price-o2.price;
+
+
     }
 }
