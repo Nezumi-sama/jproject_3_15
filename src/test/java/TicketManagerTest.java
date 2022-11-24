@@ -8,13 +8,13 @@ class TicketManagerTest {
 
     Ticket ticket01 = new Ticket(81, 6480, "GOJ", "SVO", 90);
     Ticket ticket02 = new Ticket(12, 2100, "DME", "LED", 100);
-    Ticket ticket03 = new Ticket(15, 3600, "DME", "LED", 100);
+    Ticket ticket03 = new Ticket(15, 3600, "DME", "LED", 90);
     Ticket ticket04 = new Ticket(41, 2080, "LED", "DME", 95);
     Ticket ticket05 = new Ticket(71, 4596, "GOJ", "DME", 100);
     Ticket ticket06 = new Ticket(21, 2100, "LED", "DME", 100);
     Ticket ticket07 = new Ticket(16, 4201, "DME", "GOJ", 80);
     Ticket ticket08 = new Ticket(13, 1470, "VKO", "LED", 90);
-    Ticket ticket09 = new Ticket(14, 2080, "DME", "LED", 100);
+    Ticket ticket09 = new Ticket(14, 2080, "DME", "LED", 80);
     Ticket ticket10 = new Ticket(61, 4360, "GOJ", "SVO", 85);
 
     @Test
@@ -57,6 +57,7 @@ class TicketManagerTest {
 
     @Test
     void searchTicketsSeveral() {
+        TicketByPriceAscComparator priceComparator = new TicketByPriceAscComparator();
         manager.addItem(ticket01);
         manager.addItem(ticket02);
         manager.addItem(ticket03);
@@ -69,13 +70,15 @@ class TicketManagerTest {
         manager.addItem(ticket10);
 
         Ticket[] expected = {ticket09, ticket02, ticket03};
-        Ticket[] actual = manager.searchTickets("DME", "LED");
+        Ticket[] actual = manager.searchTickets("DME", "LED", priceComparator);
 
         assertArrayEquals(expected, actual);
     }
 
     @Test
     void searchTicketsOne() {
+        TicketByPriceAscComparator priceComparator = new TicketByPriceAscComparator();
+
         manager.addItem(ticket01);
         manager.addItem(ticket02);
         manager.addItem(ticket03);
@@ -88,13 +91,15 @@ class TicketManagerTest {
         manager.addItem(ticket10);
 
         Ticket[] expected = {ticket05};
-        Ticket[] actual = manager.searchTickets("GOJ", "DME");
+        Ticket[] actual = manager.searchTickets("GOJ", "DME",priceComparator);
 
         assertArrayEquals(expected, actual);
     }
 
     @Test
     void searchTicketsNotFound() {
+        TicketByPriceAscComparator priceComparator = new TicketByPriceAscComparator();
+
         manager.addItem(ticket01);
         manager.addItem(ticket02);
         manager.addItem(ticket03);
@@ -107,7 +112,68 @@ class TicketManagerTest {
         manager.addItem(ticket10);
 
         Ticket[] expected = {};
-        Ticket[] actual = manager.searchTickets("SVX", "DME");
+        Ticket[] actual = manager.searchTickets("SVX", "DME",priceComparator);
+
+        assertArrayEquals(expected, actual);
+    }
+
+
+    @Test
+    void searchTicketsSeveralFast() {
+        TicketByTimeAscComparator timeComparator = new TicketByTimeAscComparator();
+        manager.addItem(ticket01);
+        manager.addItem(ticket02);
+        manager.addItem(ticket03);
+        manager.addItem(ticket04);
+        manager.addItem(ticket05);
+        manager.addItem(ticket06);
+        manager.addItem(ticket07);
+        manager.addItem(ticket08);
+        manager.addItem(ticket09);
+        manager.addItem(ticket10);
+
+        Ticket[] expected = {ticket09, ticket03, ticket02};
+        Ticket[] actual = manager.searchTickets("DME", "LED", timeComparator);
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchTicketsOneFast() {
+        TicketByTimeAscComparator timeComparator = new TicketByTimeAscComparator();
+        manager.addItem(ticket01);
+        manager.addItem(ticket02);
+        manager.addItem(ticket03);
+        manager.addItem(ticket04);
+        manager.addItem(ticket05);
+        manager.addItem(ticket06);
+        manager.addItem(ticket07);
+        manager.addItem(ticket08);
+        manager.addItem(ticket09);
+        manager.addItem(ticket10);
+
+        Ticket[] expected = {ticket05};
+        Ticket[] actual = manager.searchTickets("GOJ", "DME", timeComparator);
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchTicketsNotFoundFast() {
+        TicketByTimeAscComparator timeComparator = new TicketByTimeAscComparator();
+        manager.addItem(ticket01);
+        manager.addItem(ticket02);
+        manager.addItem(ticket03);
+        manager.addItem(ticket04);
+        manager.addItem(ticket05);
+        manager.addItem(ticket06);
+        manager.addItem(ticket07);
+        manager.addItem(ticket08);
+        manager.addItem(ticket09);
+        manager.addItem(ticket10);
+
+        Ticket[] expected = {};
+        Ticket[] actual = manager.searchTickets("SVX", "DME", timeComparator);
 
         assertArrayEquals(expected, actual);
     }
